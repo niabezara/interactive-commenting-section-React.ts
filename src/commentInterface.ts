@@ -32,7 +32,7 @@ interface CurrentUser {
   username: string;
 }
 
-interface CommentData {
+export interface CommentData {
   currentUser: CurrentUser;
   comments: Comment[];
 }

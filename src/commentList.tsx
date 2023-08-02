@@ -1,15 +1,24 @@
 import { useState } from "react";
 import Data from "./Data/Data.json";
-import { Comment } from "./commentInterface";
-// import newComponent from "./newComponent";
-
 import NewPost from "./NewPost";
-import styled from "styled-components";
+import { Comment, CommentData } from "./commentInterface";
 
-function CommentList(props: any) {
+import {
+  Button,
+  Replay,
+  ReplaySection,
+  ReplaySubCard,
+  SubCard,
+  Info,
+  Card,
+} from "./commentStyle";
+
+function CommentList() {
   const [newComment, setNewComment] = useState("");
   const [id, setId] = useState(null);
   const [showReplay, setshowReplay] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [commentsData, setCommentsData] = useState<CommentData>(Data);
 
   const handleClick = (itemIndex: any) => {
     if (id === itemIndex) {
@@ -22,7 +31,9 @@ function CommentList(props: any) {
 
   function getCurrentTimestamp() {
     const now = new Date();
-    return now.toISOString();
+    const day = now.getDate();
+    const month = now.toLocaleString("default", { month: "short" });
+    return `${day} ${month}`;
   }
 
   const handleReplyClick = (commentIndex: number, item: any) => {
@@ -30,38 +41,38 @@ function CommentList(props: any) {
       return;
     }
     const newReply = {
-      id: Data.comments[commentIndex].replies.length + 1,
+      id: Math.floor(Math.random() * 100000),
       content: newComment,
       createdAt: getCurrentTimestamp(),
       score: 0,
-      replyingTo: Data.currentUser.username,
-      user: Data.currentUser,
+      replyingTo: commentsData.currentUser.username,
+      user: commentsData.currentUser,
     };
 
-    Data.comments[item.id - 1].replies.unshift(newReply);
+    commentsData.comments[item.id - 1].replies.push(newReply);
     // setNewComment("");
     setshowReplay(false);
   };
   const handlePostClick = () => {
     const newPost = {
-      id: Data.comments.length + 1,
+      id: Math.floor(Math.random() * 100000),
       content: newComment,
       createdAt: getCurrentTimestamp(),
       score: 0,
-      replyingTo: Data.currentUser.username,
-      user: Data.currentUser,
+      replyingTo: commentsData.currentUser.username,
+      user: commentsData.currentUser,
       replies: [],
     };
-    Data.comments.push(newPost);
-    setNewComment("");
+    commentsData.comments.push(newPost);
+    // setNewComment("");
   };
 
-  const handleEdit = (id: number) => {
-    console.log(newComment);
+  const handleEdit = (id: number, comment: any, index: number) => {
+    setEdit(true);
   };
   return (
     <Card>
-      {Data.comments.map((item, index) => {
+      {commentsData.comments.map((item, index) => {
         return (
           <div key={index}>
             <SubCard>
@@ -107,16 +118,40 @@ function CommentList(props: any) {
                       <h1>{comment.user.username}</h1>
                       <p>{item.createdAt}</p>
                     </div>
-                    {comment.user.username === Data.currentUser.username ? (
+                    {comment.user.username ===
+                    commentsData.currentUser.username ? (
                       <div>
-                        <button onClick={() => handleEdit(id)}>Edit</button>
+                        <button onClick={() => handleEdit(id, comment, index)}>
+                          Edit
+                        </button>
                         <button>Delete</button>
                       </div>
                     ) : (
                       <Replay onClick={() => handleClick(index)}>replay</Replay>
                     )}
                   </Info>
-                  <p>{comment.content}</p>
+                  {edit ? (
+                    <input
+                      value={commentsData.comments[index].replies[id].content}
+                      onKeyDown={(e) => {
+                        if (e.key == "Enter") {
+                          setEdit(false);
+                        }
+                      }}
+                      onClick={(e) =>
+                        console.log((e.target as HTMLInputElement).readOnly)
+                      }
+                      onChange={(e) => {
+                        console.log("hello");
+                        const clone = { ...commentsData };
+                        clone.comments[index].replies[id].content =
+                          e.target.value;
+                        setCommentsData(clone);
+                      }}
+                    />
+                  ) : (
+                    <p>{commentsData.comments[index].replies[id].content}</p>
+                  )}
                 </ReplaySubCard>
               );
             })}
@@ -124,7 +159,7 @@ function CommentList(props: any) {
             {id === index && showReplay && (
               <ReplaySection>
                 <img
-                  src={Data.currentUser.image.png}
+                  src={commentsData.currentUser.image.png}
                   alt=""
                   width="32px"
                   height="32px"
@@ -154,66 +189,3 @@ function CommentList(props: any) {
 }
 
 export default CommentList;
-
-const Button = styled.button`
-  border-radius: 8px;
-  background: var(--moderate-blue, #5357b6);
-  border: none;
-  color: #fff;
-  padding: 12px 30px;
-`;
-
-const Card = styled.div`
-  gap: 20px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Info = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-`;
-const SubCard = styled.div`
-  background: var(--white, #fff);
-  padding: 24px;
-  border-radius: 8px;
-`;
-
-const ReplaySubCard = styled(SubCard)`
-  margin: 15px 0 15px 50px;
-  padding-left: 15px;
-`;
-
-const ReplaySection = styled(ReplaySubCard)`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  input {
-    width: 100%;
-    border: none;
-    border-radius: 8px;
-    border: 1px solid var(--light-gray, #e9ebf0);
-    background: var(--white, #fff);
-    margin-left: 16px;
-    margin-right: 16px;
-    height: 96px;
-  }
-`;
-
-const Replay = styled.button`
-  color: var(--moderate-blue, #5357b6);
-  font-feature-settings: "clig" off, "liga" off;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-  background: transparent;
-  border: none;
-  &:before {
-    content: url("/images/icon-reply.svg");
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-`;

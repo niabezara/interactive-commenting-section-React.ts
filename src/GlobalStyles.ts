@@ -4,6 +4,7 @@ const GlobalStyles = createGlobalStyle`
 *{
     margin:0;
     padding:0;
+  font-size: 16px;
 }
 
 body{
@@ -14,7 +15,7 @@ body{
     padding: 64px;
     font-family: Rubik;
     font-style: normal;
-  font-weight: 400;
+  
 }
 `;
 
