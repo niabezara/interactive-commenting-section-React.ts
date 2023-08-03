@@ -13,6 +13,8 @@ import {
   Card,
   Delete,
   Input,
+  PopUp,
+  Overlay,
   Edit,
 } from "./commentStyle";
 
@@ -22,6 +24,8 @@ function CommentList() {
   const [showReplay, setshowReplay] = useState(false);
   const [edit, setEdit] = useState<null | number>(null);
   const [commentsData, setCommentsData] = useState<CommentData>(Data);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState();
 
   const handleClick = (itemIndex: any) => {
     if (id === itemIndex) {
@@ -81,6 +85,17 @@ function CommentList() {
     setCommentsData(updatedCommentsData);
     setEdit(null);
   };
+  const handleDelete = (commentIndex: any, replyId: any) => {
+    const updatedCommentsData = { ...commentsData };
+    if (replyId === undefined) {
+      // Deleting a post
+      updatedCommentsData.comments.splice(commentIndex, 1);
+    } else {
+      // Deleting a reply
+      updatedCommentsData.comments[commentIndex].replies.splice(replyId, 1);
+    }
+    setCommentsData(updatedCommentsData);
+  };
   return (
     <Card>
       {commentsData.comments.map((item) => {
@@ -135,7 +150,14 @@ function CommentList() {
                     {comment.user.username ===
                     commentsData.currentUser.username ? (
                       <div>
-                        <Delete>Delete</Delete>
+                        <Delete
+                          onClick={() => {
+                            setShowConfirmation(true);
+                          }}
+                        >
+                          Delete
+                        </Delete>
+
                         <Edit
                           onClick={() => {
                             setEdit(comment.id);
@@ -198,6 +220,31 @@ function CommentList() {
           </div>
         );
       })}
+      {showConfirmation && (
+        <>
+          <Overlay></Overlay>
+          <PopUp>
+            <h1>Delete comment</h1>
+            <p>
+              Are you sure you want to delete this comment? This will remove the
+              comment and can’t be undone.
+            </p>
+            <div>
+              <button
+                onClick={() => {
+                  setShowConfirmation(false);
+                }}
+              >
+                YES, DELETE
+              </button>
+              <button onClick={() => setShowConfirmation(false)}>
+                NO, CANCEL
+              </button>
+            </div>
+          </PopUp>
+        </>
+      )}
+
       <NewPost
         handlePostClick={handlePostClick}
         setNewComment={setNewComment}

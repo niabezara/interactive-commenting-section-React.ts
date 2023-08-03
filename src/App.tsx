@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CommentList from "./CommentList.tsx";
 import GlobalStyles from "./GlobalStyles.ts";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { HelmetProvider } from "react-helmet-async";
 
 function App() {
   return (

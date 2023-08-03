@@ -12,7 +12,7 @@ body{
     min-height: 100vh;
     justify-content: center;
     display: flex;
-    padding: 64px;
+   
     font-family: Rubik;
     font-style: normal;
   

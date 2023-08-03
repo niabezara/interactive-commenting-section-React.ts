@@ -99,6 +99,35 @@ const Delete = styled.button`
   }
 `;
 
+const PopUp = styled.div`
+  border-radius: 8px;
+  background: var(--white, #fff);
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 16px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 291px;
+  height: 166px;
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+`;
+
 export {
   Button,
   Replay,
@@ -110,4 +139,6 @@ export {
   Edit,
   Delete,
   Input,
+  PopUp,
+  Overlay,
 };
