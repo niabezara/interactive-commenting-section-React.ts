@@ -15,6 +15,7 @@ import {
   Input,
   PopUp,
   Overlay,
+  Buttons,
   Edit,
 } from "./commentStyle";
 
@@ -229,18 +230,22 @@ function CommentList() {
               Are you sure you want to delete this comment? This will remove the
               comment and can’t be undone.
             </p>
-            <div>
+            <Buttons>
               <button
+                className="button1"
                 onClick={() => {
                   setShowConfirmation(false);
                 }}
               >
                 YES, DELETE
               </button>
-              <button onClick={() => setShowConfirmation(false)}>
+              <button
+                className="button2"
+                onClick={() => setShowConfirmation(false)}
+              >
                 NO, CANCEL
               </button>
-            </div>
+            </Buttons>
           </PopUp>
         </>
       )}

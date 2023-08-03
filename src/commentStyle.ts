@@ -114,8 +114,11 @@ const PopUp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 291px;
-  height: 166px;
+  width: 343px;
+  height: 163px;
+  gap: 20px;
+  text-align: center;
+  padding: 32px;
 `;
 
 const Overlay = styled.div`
@@ -126,6 +129,40 @@ const Overlay = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  gap: 14px;
+  text-align: center;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
+
+  .button1 {
+    border-radius: 8px;
+    background: var(--soft-red, #ed6368);
+    border: none;
+    width: 161px;
+    height: 48px;
+    color: var(--white, #fff);
+  }
+  .button2 {
+    border-radius: 8px;
+    background: var(--grayish-blue, #67727e);
+    color: var(--white, #fff);
+    text-align: center;
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 150% */
+    width: 161px;
+    height: 48px;
+    border: none;
+  }
 `;
 
 export {
@@ -141,4 +178,5 @@ export {
   Input,
   PopUp,
   Overlay,
+  Buttons,
 };
