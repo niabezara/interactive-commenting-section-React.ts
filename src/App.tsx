@@ -1,19 +1,19 @@
 import styled from "styled-components";
-import CommentList from "./CommentList";
+import CommentList from "./CommentList.tsx";
 import GlobalStyles from "./GlobalStyles.ts";
-import { Helmet } from "react-helmet";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 function App() {
   return (
     <>
-      <Helmet>
+      <HelmetProvider>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap"
           rel="stylesheet"
         />
-      </Helmet>
+      </HelmetProvider>
       <Conatiner>
         <GlobalStyles />
         <CommentList />

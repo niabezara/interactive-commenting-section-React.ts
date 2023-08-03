@@ -40,17 +40,17 @@ const ReplaySection = styled(ReplaySubCard)`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+`;
 
-  input {
-    width: 100%;
-    border: none;
-    border-radius: 8px;
-    border: 1px solid var(--light-gray, #e9ebf0);
-    background: var(--white, #fff);
-    margin-left: 16px;
-    margin-right: 16px;
-    height: 96px;
-  }
+const Input = styled.input`
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  border: 1px solid var(--light-gray, #e9ebf0);
+  background: var(--white, #fff);
+  margin-left: 16px;
+  margin-right: 16px;
+  height: 96px;
 `;
 
 const Replay = styled.button`
@@ -68,4 +68,46 @@ const Replay = styled.button`
   }
 `;
 
-export { Button, Replay, ReplaySection, ReplaySubCard, SubCard, Info, Card };
+const Edit = styled.button`
+  color: var(--moderate-blue, #5357b6);
+  font-feature-settings: "clig" off, "liga" off;
+  border: none;
+  background: transparent;
+
+  /* Body (M Bold) */
+  font-family: Rubik;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
+  &:before {
+    content: url("/images/icon-edit.svg");
+    background-repeat: no-repeat;
+  }
+`;
+
+const Delete = styled.button`
+  margin-right: 16px;
+  border: none;
+  color: var(--soft-red, #ed6368);
+  font-feature-settings: "clig" off, "liga" off;
+
+  background: transparent;
+  &:before {
+    content: url("/images/icon-delete.svg");
+    background-repeat: no-repeat;
+  }
+`;
+
+export {
+  Button,
+  Replay,
+  ReplaySection,
+  ReplaySubCard,
+  SubCard,
+  Info,
+  Card,
+  Edit,
+  Delete,
+  Input,
+};

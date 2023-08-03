@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Data from "./Data/Data.json";
+import Data from "./data/data.json";
 import NewPost from "./NewPost";
 import { Comment, CommentData } from "./commentInterface";
 
@@ -11,13 +11,16 @@ import {
   SubCard,
   Info,
   Card,
+  Delete,
+  Input,
+  Edit,
 } from "./commentStyle";
 
 function CommentList() {
   const [newComment, setNewComment] = useState("");
   const [id, setId] = useState(null);
   const [showReplay, setshowReplay] = useState(false);
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState<null | number>(null);
   const [commentsData, setCommentsData] = useState<CommentData>(Data);
 
   const handleClick = (itemIndex: any) => {
@@ -36,6 +39,7 @@ function CommentList() {
     return `${day} ${month}`;
   }
 
+  //   this function is to replay the comments
   const handleReplyClick = (commentIndex: number, item: any) => {
     if (newComment === "") {
       return;
@@ -49,10 +53,12 @@ function CommentList() {
       user: commentsData.currentUser,
     };
 
-    commentsData.comments[item.id - 1].replies.push(newReply);
-    // setNewComment("");
+    commentsData.comments[commentIndex].replies.push(newReply);
+    setNewComment("");
     setshowReplay(false);
   };
+
+  //   this function is for post the new comment
   const handlePostClick = () => {
     const newPost = {
       id: Math.floor(Math.random() * 100000),
@@ -64,17 +70,25 @@ function CommentList() {
       replies: [],
     };
     commentsData.comments.push(newPost);
-    // setNewComment("");
+    setNewComment("");
   };
-
-  const handleEdit = (id: number, comment: any, index: number) => {
-    setEdit(true);
+  const handleEditSubmit = (commentIndex: any, replyId: any) => {
+    const updatedCommentsData = { ...commentsData };
+    updatedCommentsData.comments[commentIndex].replies[replyId].content =
+      updatedCommentsData.comments[commentIndex].replies[
+        replyId
+      ].content.trim();
+    setCommentsData(updatedCommentsData);
+    setEdit(null);
   };
   return (
     <Card>
-      {commentsData.comments.map((item, index) => {
+      {commentsData.comments.map((item) => {
+        const index = commentsData.comments.findIndex(
+          (comment) => item.id == comment.id
+        );
         return (
-          <div key={index}>
+          <div key={item.id}>
             <SubCard>
               <Info>
                 <div
@@ -121,28 +135,34 @@ function CommentList() {
                     {comment.user.username ===
                     commentsData.currentUser.username ? (
                       <div>
-                        <button onClick={() => handleEdit(id, comment, index)}>
+                        <Delete>Delete</Delete>
+                        <Edit
+                          onClick={() => {
+                            setEdit(comment.id);
+
+                            console.log(comment.id);
+                          }}
+                        >
                           Edit
-                        </button>
-                        <button>Delete</button>
+                        </Edit>
                       </div>
                     ) : (
                       <Replay onClick={() => handleClick(index)}>replay</Replay>
                     )}
                   </Info>
-                  {edit ? (
-                    <input
+                  {edit == comment.id ? (
+                    <Input
                       value={commentsData.comments[index].replies[id].content}
                       onKeyDown={(e) => {
                         if (e.key == "Enter") {
-                          setEdit(false);
+                          console.log(e.key);
+                          handleEditSubmit(index, id);
                         }
                       }}
                       onClick={(e) =>
                         console.log((e.target as HTMLInputElement).readOnly)
                       }
                       onChange={(e) => {
-                        console.log("hello");
                         const clone = { ...commentsData };
                         clone.comments[index].replies[id].content =
                           e.target.value;
@@ -164,7 +184,7 @@ function CommentList() {
                   width="32px"
                   height="32px"
                 />
-                <input
+                <Input
                   type="text"
                   value={newComment}
                   placeholder="new Comment"
@@ -182,7 +202,6 @@ function CommentList() {
         handlePostClick={handlePostClick}
         setNewComment={setNewComment}
         newComment={newComment}
-        handleEdit={handleEdit}
       />
     </Card>
   );
