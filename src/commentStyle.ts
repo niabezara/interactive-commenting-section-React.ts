@@ -6,6 +6,10 @@ const Button = styled.button`
   border: none;
   color: #fff;
   padding: 12px 30px;
+  &:hover {
+    background: var(--light-grayish-blue, #c5c6ef);
+    cursor: pointer;
+  }
 `;
 
 const Card = styled.div`
@@ -52,6 +56,9 @@ const Input = styled.input`
   margin-right: 16px;
   height: 96px;
   cursor: pointer;
+  &:hover {
+    border: 1px solid var(--moderate-blue, #5357b6);
+  }
 `;
 
 const Replay = styled.button`
@@ -67,6 +74,10 @@ const Replay = styled.button`
     content: url("/images/icon-reply.svg");
     background-repeat: no-repeat;
     background-position: center;
+  }
+  &:hover {
+    color: var(--light-grayish-blue, #c5c6ef);
+    font-feature-settings: "clig" off, "liga" off;
   }
 `;
 

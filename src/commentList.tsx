@@ -30,6 +30,9 @@ function CommentList() {
     commentIndex: 0,
     replyId: 0,
   });
+  const [ItemToDeleteSecond, setItemToDeleteSecond] = useState({
+    itemId: 0,
+  });
 
   const handleClick = (itemIndex: any) => {
     if (id === itemIndex) {
@@ -68,6 +71,9 @@ function CommentList() {
 
   //   this function is for post the new comment
   const handlePostClick = () => {
+    if (newComment === "") {
+      return;
+    }
     const newPost = {
       id: Math.floor(Math.random() * 100000),
       content: newComment,
@@ -134,10 +140,7 @@ function CommentList() {
                     <Delete
                       onClick={() => {
                         setShowConfirmation(true);
-                        setItemToDelete({
-                          commentIndex: index,
-                          replyId: id,
-                        });
+                        // setItemToDeleteSecond({ itemId: id });
                       }}
                     >
                       Delete
@@ -145,7 +148,8 @@ function CommentList() {
 
                     <Edit
                       onClick={() => {
-                        setEdit(comment.id);
+                        setEdit(item.id);
+                        // setUpdate(true);
                       }}
                     >
                       Edit
@@ -156,6 +160,7 @@ function CommentList() {
                 )}
               </Info>
               <p>{item.content}</p>
+              {/* {Update ? <button>UPDATE</button> : null} */}
             </SubCard>
 
             {item.replies.map((comment, id) => {
@@ -248,7 +253,7 @@ function CommentList() {
                   onChange={(e) => setNewComment(e.target.value)}
                 />
                 <Button onClick={() => handleReplyClick(index, item)}>
-                  SEND
+                  REPLY
                 </Button>
               </ReplaySection>
             )}
@@ -271,6 +276,7 @@ function CommentList() {
                   setShowConfirmation(false);
                   if (itemToDelete) {
                     const { commentIndex, replyId } = itemToDelete;
+
                     handleDelete(commentIndex, replyId);
                   }
                   setItemToDelete({ commentIndex: 0, replyId: 0 });
