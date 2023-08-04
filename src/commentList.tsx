@@ -23,10 +23,10 @@ function CommentList() {
   const [newComment, setNewComment] = useState("");
   const [id, setId] = useState(null);
   const [showReplay, setshowReplay] = useState(false);
-  const [edit, setEdit] = useState<null | number>(null);
+  const [edit, setEdit] = useState<number | null>(null);
   const [commentsData, setCommentsData] = useState<CommentData>(Data);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState();
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const handleClick = (itemIndex: any) => {
     if (id === itemIndex) {
@@ -103,6 +103,7 @@ function CommentList() {
         const index = commentsData.comments.findIndex(
           (comment) => item.id == comment.id
         );
+
         return (
           <div key={item.id}>
             <SubCard>
@@ -154,6 +155,10 @@ function CommentList() {
                         <Delete
                           onClick={() => {
                             setShowConfirmation(true);
+                            setItemToDelete({
+                              commentIndex: index,
+                              replyId: id,
+                            });
                           }}
                         >
                           Delete
@@ -235,6 +240,11 @@ function CommentList() {
                 className="button1"
                 onClick={() => {
                   setShowConfirmation(false);
+                  if (itemToDelete) {
+                    const { commentIndex, replyId } = itemToDelete;
+                    handleDelete(commentIndex, replyId);
+                  }
+                  setItemToDelete(null);
                 }}
               >
                 YES, DELETE
@@ -254,6 +264,7 @@ function CommentList() {
         handlePostClick={handlePostClick}
         setNewComment={setNewComment}
         newComment={newComment}
+        commentsData={commentsData}
       />
     </Card>
   );

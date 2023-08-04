@@ -1,16 +1,27 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Data from "./Data/Data.json";
 import styled from "styled-components";
+import { Comment, CommentData } from "./commentInterface";
 
 export default function NewPost({
   handlePostClick,
   newComment,
   setNewComment,
+  commentsData,
 }: {
   handlePostClick: () => void;
   setNewComment: Dispatch<SetStateAction<string>>;
   newComment: string;
+  commentsData: CommentData;
 }) {
+  const [edit, setEdit] = useState(false);
+
+  const newPostEdit = () => {
+    if (newComment.trim() !== "") {
+      setEdit(true);
+    }
+  };
+
   return (
     <NewCommentSection>
       <img src={Data.currentUser.image.png} alt="" width="40px" height="40px" />
@@ -23,7 +34,14 @@ export default function NewPost({
         onChange={(e) => setNewComment(e.target.value)}
       />
 
-      <Button onClick={handlePostClick}>SEND</Button>
+      <Button
+        onClick={() => {
+          handlePostClick();
+          newPostEdit();
+        }}
+      >
+        SEND
+      </Button>
     </NewCommentSection>
   );
 }
