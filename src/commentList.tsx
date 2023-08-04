@@ -26,7 +26,10 @@ function CommentList() {
   const [edit, setEdit] = useState<number | null>(null);
   const [commentsData, setCommentsData] = useState<CommentData>(Data);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
+  const [itemToDelete, setItemToDelete] = useState({
+    commentIndex: 0,
+    replyId: 0,
+  });
 
   const handleClick = (itemIndex: any) => {
     if (id === itemIndex) {
@@ -244,7 +247,7 @@ function CommentList() {
                     const { commentIndex, replyId } = itemToDelete;
                     handleDelete(commentIndex, replyId);
                   }
-                  setItemToDelete(null);
+                  setItemToDelete({ commentIndex: 0, replyId: 0 });
                 }}
               >
                 YES, DELETE
@@ -264,7 +267,6 @@ function CommentList() {
         handlePostClick={handlePostClick}
         setNewComment={setNewComment}
         newComment={newComment}
-        commentsData={commentsData}
       />
     </Card>
   );
