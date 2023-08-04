@@ -22,7 +22,6 @@ export default function NewPost({
         placeholder="Add a comment…"
         onChange={(e) => setNewComment(e.target.value)}
       />
-
       <Button
         onClick={() => {
           handlePostClick();
@@ -50,6 +49,7 @@ const NewCommentSection = styled.div`
     margin-left: 16px;
     margin-right: 16px;
     height: 96px;
+    cursor: pointer;
   }
 `;
 const Button = styled.button`
@@ -58,4 +58,5 @@ const Button = styled.button`
   border: none;
   color: #fff;
   padding: 12px 30px;
+  cursor: pointer;
 `;

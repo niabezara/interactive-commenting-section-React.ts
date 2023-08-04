@@ -78,6 +78,7 @@ function CommentList() {
       replies: [],
     };
     commentsData.comments.push(newPost);
+
     setNewComment("");
   };
   const handleEditSubmit = (commentIndex: any, replyId: any) => {
@@ -127,7 +128,32 @@ function CommentList() {
                   <h1>{item.user.username}</h1>
                   <p>{item.createdAt}</p>
                 </div>
-                <Replay onClick={() => handleClick(index)}>replay</Replay>
+                {commentsData.currentUser.username ===
+                commentsData.comments[index].user.username ? (
+                  <div>
+                    <Delete
+                      onClick={() => {
+                        setShowConfirmation(true);
+                        setItemToDelete({
+                          commentIndex: index,
+                          replyId: id,
+                        });
+                      }}
+                    >
+                      Delete
+                    </Delete>
+
+                    <Edit
+                      onClick={() => {
+                        setEdit(comment.id);
+                      }}
+                    >
+                      Edit
+                    </Edit>
+                  </div>
+                ) : (
+                  <Replay onClick={() => handleClick(index)}>replay</Replay>
+                )}
               </Info>
               <p>{item.content}</p>
             </SubCard>

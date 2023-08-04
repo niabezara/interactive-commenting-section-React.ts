@@ -51,6 +51,7 @@ const Input = styled.input`
   margin-left: 16px;
   margin-right: 16px;
   height: 96px;
+  cursor: pointer;
 `;
 
 const Replay = styled.button`
@@ -61,6 +62,7 @@ const Replay = styled.button`
   line-height: 24px;
   background: transparent;
   border: none;
+  cursor: pointer;
   &:before {
     content: url("/images/icon-reply.svg");
     background-repeat: no-repeat;
@@ -73,7 +75,7 @@ const Edit = styled.button`
   font-feature-settings: "clig" off, "liga" off;
   border: none;
   background: transparent;
-
+  cursor: pointer;
   /* Body (M Bold) */
   font-family: Rubik;
   font-size: 16px;
@@ -91,7 +93,7 @@ const Delete = styled.button`
   border: none;
   color: var(--soft-red, #ed6368);
   font-feature-settings: "clig" off, "liga" off;
-
+  cursor: pointer;
   background: transparent;
   &:before {
     content: url("/images/icon-delete.svg");
@@ -148,6 +150,7 @@ const Buttons = styled.div`
     width: 161px;
     height: 48px;
     color: var(--white, #fff);
+    cursor: pointer;
   }
   .button2 {
     border-radius: 8px;
@@ -162,6 +165,7 @@ const Buttons = styled.div`
     width: 161px;
     height: 48px;
     border: none;
+    cursor: pointer;
   }
 `;
 
