@@ -26,7 +26,10 @@ function CommentList() {
   const [edit, setEdit] = useState<number | null>(null);
   const [commentsData, setCommentsData] = useState<CommentData>(Data);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState({
+  const [itemToDelete, setItemToDelete] = useState<{
+    commentIndex: number;
+    replyId: number | null;
+  }>({
     commentIndex: 0,
     replyId: 0,
   });
@@ -98,7 +101,8 @@ function CommentList() {
   };
   const handleDelete = (commentIndex: any, replyId: any) => {
     const updatedCommentsData = { ...commentsData };
-    if (replyId === undefined) {
+    console.log(replyId);
+    if (!replyId) {
       // Deleting a post
       updatedCommentsData.comments.splice(commentIndex, 1);
     } else {
@@ -140,7 +144,10 @@ function CommentList() {
                     <Delete
                       onClick={() => {
                         setShowConfirmation(true);
-                        // setItemToDeleteSecond({ itemId: id });
+                        setItemToDelete({
+                          commentIndex: index,
+                          replyId: null,
+                        });
                       }}
                     >
                       Delete
@@ -159,8 +166,27 @@ function CommentList() {
                   <Replay onClick={() => handleClick(index)}>replay</Replay>
                 )}
               </Info>
-              <p>{item.content}</p>
-              {/* {Update ? <button>UPDATE</button> : null} */}
+              {edit !== item.id ? (
+                <p>{item.content}</p>
+              ) : (
+                <Input
+                  value={commentsData.comments[index].content}
+                  onKeyDown={(e) => {
+                    if (e.key == "Enter") {
+                      console.log(e.key);
+                      handleEditSubmit(index, id);
+                    }
+                  }}
+                  onClick={(e) =>
+                    console.log((e.target as HTMLInputElement).readOnly)
+                  }
+                  onChange={(e) => {
+                    const clone = { ...commentsData };
+                    clone.comments[index].content = e.target.value;
+                    setCommentsData(clone);
+                  }}
+                />
+              )}
             </SubCard>
 
             {item.replies.map((comment, id) => {
@@ -273,13 +299,13 @@ function CommentList() {
               <button
                 className="button1"
                 onClick={() => {
-                  setShowConfirmation(false);
                   if (itemToDelete) {
                     const { commentIndex, replyId } = itemToDelete;
 
                     handleDelete(commentIndex, replyId);
                   }
                   setItemToDelete({ commentIndex: 0, replyId: 0 });
+                  setShowConfirmation(false);
                 }}
               >
                 YES, DELETE
